@@ -1,5 +1,5 @@
 // src/ProductContext.js
-import React, { createContext, useState } from 'react';
+import  { createContext, useState } from 'react';
 
 // Create the context
 export const ProductContext = createContext();
@@ -16,7 +16,7 @@ const ProductProvider = ({ children }) => {
         price: 10.99,
         rating: 4.5,
         reviews: 120,
-        image: "https://via.placeholder.com/150"
+        image: "https://images.meesho.com/images/products/269522068/6gkxe_512.jpg"
       },
       {
         id: 2,
@@ -25,16 +25,16 @@ const ProductProvider = ({ children }) => {
         price: 8.99,
         rating: 4.7,
         reviews: 200,
-        image: "https://via.placeholder.com/150"
+        image: "https://images.meesho.com/images/products/269522068/6gkxe_512.jpg"
       },
       {
         id: 3,
-        title: "To Kill a Mockingbird",
+        title: "To Kill a Mockingbird Kill a Mockingbird",
         author: "Harper Lee",
         price: 9.99,
         rating: 4.8,
         reviews: 250,
-        image: "https://via.placeholder.com/150"
+        image: "https://images.meesho.com/images/products/269522068/6gkxe_512.jpg"
       },
       {
         id: 4,
@@ -103,14 +103,14 @@ const ProductProvider = ({ children }) => {
   ];
 
   // Function to handle adding an item to the cart
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
+  const handleBuyNow = (product) => {
+    setCart([...cart, product]);
     alert(`${product.title} has been added to your cart!`);
     console.log(cart)
   };
 
   return (
-    <ProductContext.Provider value={{ products, cart, handleAddToCart }}>
+    <ProductContext.Provider value={{ products, cart, handleBuyNow }}>
       {children}
     </ProductContext.Provider>
   );
