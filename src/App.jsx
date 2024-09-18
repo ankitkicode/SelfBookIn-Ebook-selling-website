@@ -1,5 +1,4 @@
 import Checkout from './components/Checkout'
-import UserProfile from './components/UserProfile'
 import {  Routes, Route } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'
@@ -13,6 +12,10 @@ import Footer from './components/Footer'
 import AdminDashboard from './Admin/AdminDashboard'
 import AddEBook from './Admin/AddEBook'
 import ViewEBooks from './Admin/ViewEBooks'
+import EditProfile from './user/EditProfile'
+import SavedEbooks from './user/SavedEbooks'
+import LikedEbooks from './user/LikedEbooks'
+import YourEBooks from './user/YourEBooks'
 
 function App() {
 
@@ -28,9 +31,13 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/e-books" element={<Ebooks />} />
         <Route path="/e-booksdetails/:id" element={<EbookDeatails />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/profile/edit/:id" element={<EditProfile />} />
+        <Route path="/profile/saved" element={<SavedEbooks />} />
+        <Route path="/profile/liked-books" element={<LikedEbooks />} />
+        <Route path="/profile/your-books" element={<YourEBooks />} />
 
+        
+        
 
         {/* Admin Routes with Outlet */}
         <Route path="/admin" element={<AdminDashboard />}>

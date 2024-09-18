@@ -3,9 +3,15 @@ import { Link } from 'react-router-dom';
 import { RiMenuLine, RiCloseLine } from 'react-icons/ri'; // Importing icons from react-icons
 import { FaFacebook, FaInstagram, FaTwitter,FaYoutube } from 'react-icons/fa';
 import { CiSearch, CiUser } from 'react-icons/ci';
+import UserProfile from '../user/UserProfile';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const toggleProfile= () => {
+    setIsProfileOpen(!isProfileOpen);
+  };
   const menuRef = useRef(null);
 
   const toggleMenu = (e) => {
@@ -39,15 +45,20 @@ const Navbar = () => {
         Selfbook<span className='text-blue-600 font-bold'>.in</span>
       </h1>
       <div className={`md:flex gap-3 md:items-center font-mono`}>
-        <Link to="/" className='hidden md:block text-gray-600 text-[.9rem]  px-2'>Home</Link>
-        <Link to="/e-books" className='hidden md:block text-gray-600 text-[.9rem]  px-2'>Ebooks</Link>
-        <Link to="/about" className='hidden md:block text-gray-600 text-[.9rem]  px-2'>About Us</Link>
-        <Link to="/contact" className='hidden md:block text-gray-600 text-[.9rem]  px-2'>Contact Us</Link>
+        <Link to="/" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Home</Link>
+        <Link to="/e-books" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Ebooks</Link>
+        <Link to="/about" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>About Us</Link>
+        <Link to="/contact" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Contact Us</Link>
       </div>
- <div className='flex gap-2'>
- <div className='icons flex text-[1.5rem] gap-2 md:gap-3 font-extrabold font-mono'>
+     <div className='flex items-center gap-2'>
+       <div className='icons flex text-[1.5rem] gap-2 md:gap-3 font-extrabold font-mono'>
       <CiSearch className='cursor-pointer'/>
-      <Link to={'/login'}><CiUser  className='cursor-pointer'/></Link>
+      <button onClick={toggleProfile} >
+        <CiUser className="cursor-pointer text-2xl" />
+      </button>
+
+      <UserProfile  isOpen={isProfileOpen} toggleProfile={toggleProfile} />
+
       </div>
       <div className="  ml-0 md:hidden">
         {isMenuOpen ? (
