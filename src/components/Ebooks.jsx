@@ -1,12 +1,23 @@
 // import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import  { useContext } from "react";
+import  { useContext, useState } from "react";
 import { Link,  } from "react-router-dom";
 import { ProductContext } from "./context/ProductContext";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Products = () => {
   // const navigate = useNavigate();
   const { products } = useContext(ProductContext);
+
+  const [likedBooks, setLikedBooks] = useState({});
+
+  // Toggle like status for each eBook
+  const toggleLike = (id) => {
+    setLikedBooks((prevLikedBooks) => ({
+      ...prevLikedBooks,
+      [id]: !prevLikedBooks[id], // Toggle like status
+    }));
+  };
   return (
     <>
     
@@ -16,12 +27,26 @@ const Products = () => {
         <h1 className="text-2xl font-bold text-gray-600 ">E-BOOKS</h1>
         <hr className="w-20 mx-auto mt-2 border-gray-400"/>
       </div> 
-      <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full ">
   {products.map((product) => (
     <div
       key={product.id}
-      className="shadow-md bg-slate-50 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono  flex flex-col h-full"
+      className="shadow-md relative bg-slate-50 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono  flex flex-col h-full"
     >
+       {/* Like Button (Top Left Corner) */}
+       <div className="absolute top-2 left-2 z-10">
+            <button
+              onClick={() => toggleLike(product.id)}
+              className="text-xl focus:outline-none"
+            >
+              {/* Conditional rendering of the like button (filled or outlined heart) */}
+              {likedBooks[product.id] ? (
+                <FaHeart className="text-red-500" /> // Filled heart if liked
+              ) : (
+                <FaRegHeart className="text-gray-400" /> // Outlined heart if not liked
+              )}
+            </button>
+          </div>
       <Link
         to={`/e-booksdetails/${product.id}`}
         className="block flex-grow"
@@ -44,7 +69,7 @@ const Products = () => {
       </Link>
     </div>
   ))}
-</div>
+      </div>
 
 
 

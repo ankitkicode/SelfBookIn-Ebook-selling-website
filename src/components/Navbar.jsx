@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { RiMenuLine, RiCloseLine } from 'react-icons/ri'; // Importing icons from react-icons
+import { RiMenuLine, RiCloseLine } from 'react-icons/ri'; 
 import { FaFacebook, FaInstagram, FaTwitter,FaYoutube } from 'react-icons/fa';
 import { CiSearch, CiUser } from 'react-icons/ci';
 import UserProfile from '../user/UserProfile';
@@ -74,7 +74,7 @@ const Navbar = () => {
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex  flex-col h-full items-start justify-between p-6 font-mono">
+        <div className="flex  flex-col h-full items-start justify-between p-4 font-mono">
           <div>
           <RiCloseLine className="text-2xl text-gray-600" onClick={toggleMenu} />
          <div className='flex flex-col items-start justify-between p-3'>
