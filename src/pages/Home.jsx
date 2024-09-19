@@ -25,9 +25,9 @@ Explore our extensive collection of ebooks across various genres. Whether you se
       {/* Hero Image */}
       <div>
         <img
-          src="https://via.placeholder.com/440"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsQc0J0fZlsIDHsHkNiyiTcbDEd2rONUBug&s"
           alt="Ebook Hero"
-          className="rounded-xl object-cover shadow-lg w-full h-auto"
+          className="rounded-xl object-cover shadow-lg w-full h-full"
         />
       </div>
     </div>
@@ -102,7 +102,7 @@ Explore our extensive collection of ebooks across various genres. Whether you se
           </div>
         </section>
 
-        {/* Newsletter Section */}
+        {/* Newsletter Section
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container w-[90%] mx-auto text-center space-y-6">
             <h2 className="text-[28px] font-semibold md:text-[36px]">
@@ -134,7 +134,7 @@ Explore our extensive collection of ebooks across various genres. Whether you se
               </Link>
             </p>
           </div>
-        </section>
+        </section> */}
 
         {/* Testimonials Section */}
         <section className="w-[90%] mx-auto py-12 md:py-24 lg:py-32">

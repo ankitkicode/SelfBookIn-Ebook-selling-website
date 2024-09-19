@@ -21,15 +21,15 @@ export const AuthProvider = ({ children }) => {
   // Forgot password
   const forgotPassword = async (email) => {
     setLoading(true);
-    try {
-      const data = await mockAPI({ email }, true);
-      console.log('Password reset email sent to:', data);
-      alert('Password reset link sent to your email');
-    } catch (error) {
-      console.error('Forgot password failed:', error.message);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    // //   const data = await mockAPI({ email }, true);
+    //   console.log('Password reset email sent to:', data);
+    //   alert('Password reset link sent to your email');
+    // } catch (error) {
+    //   console.error('Forgot password failed:', error.message);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   // Logout function to clear user data

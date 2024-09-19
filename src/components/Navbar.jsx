@@ -49,6 +49,7 @@ const Navbar = () => {
         <Link to="/e-books" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Ebooks</Link>
         <Link to="/about" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>About Us</Link>
         <Link to="/contact" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Contact Us</Link>
+        <Link to="/login" className='hidden md:block text-gray-600 text-[.99rem]  px-2'>Login</Link>
       </div>
      <div className='flex items-center gap-2'>
        <div className='icons flex text-[1.5rem] gap-2 md:gap-3 font-extrabold font-mono'>
@@ -85,6 +86,7 @@ const Navbar = () => {
           </Link>
           <Link to="/about" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}><i className="ri-shopping-cart-fill mr-1"></i> About Us</Link>
           <Link to="/contact" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}><i className="ri-user-2-fill mr-1"></i> Contact Us</Link>
+          <Link to="/login" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}><i className="ri-user-2-fill mr-1"></i>Login</Link>
           </div>
           </div>
           <div className="socialicons text-xl flex items-center justify-between ">
