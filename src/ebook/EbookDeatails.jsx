@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { ProductContext } from "../components/context/ProductContext";
+import { ProductContext } from "../context/ProductContext";
 
-const ProductDetails = () => {
+const EbookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { products, handleBuyNow } = useContext(ProductContext);
@@ -80,4 +80,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default EbookDetails;

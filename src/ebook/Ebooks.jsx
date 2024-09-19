@@ -2,10 +2,10 @@
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { useContext, useState } from "react";
 import { Link,  } from "react-router-dom";
-import { ProductContext } from "./context/ProductContext";
+import { ProductContext } from "../context/ProductContext";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const Products = () => {
+const Ebooks = () => {
   // const navigate = useNavigate();
   const { products } = useContext(ProductContext);
 
@@ -79,4 +79,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Ebooks;

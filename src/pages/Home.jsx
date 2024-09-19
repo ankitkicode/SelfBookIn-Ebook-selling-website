@@ -187,7 +187,7 @@ Explore our extensive collection of ebooks across various genres. Whether you se
                 </div>
                 <p className="text-[15px] text-gray-500">
                   "This platform has transformed the way I read books. The variety of genres and the user-friendly
-                  interface make it my go-to for finding new reads."
+                  interface make it my go-to for finding new reads"
                 </p>
               </div>
             </div>
