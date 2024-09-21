@@ -1,13 +1,16 @@
-
 import { Link } from 'react-router-dom';
 import { AiOutlineClose } from 'react-icons/ai'; // Close icon from react-icons
+import AuthContext from '../context/AuthContext';
+import { useContext } from 'react';
 
 const UserProfile = ({ isOpen, toggleProfile }) => {
+  const { user, logout } = useContext(AuthContext);
+
   const handleLogout = () => {
-   
-    console.log('Logout');
-    toggleProfile()
+    logout(); 
+    toggleProfile(); 
   };
+
   return (
     <div>
       {isOpen && (
@@ -34,15 +37,19 @@ const UserProfile = ({ isOpen, toggleProfile }) => {
         <div className="flex items-center p-4">
           {/* User Image */}
           <img
-            src="https://via.placeholder.com/100"
+            src={user?.avatarUrl || 'https://via.placeholder.com/100'} // Display user's avatar if available, otherwise use a placeholder
             alt="User Avatar"
             className="rounded-full w-18 h-18 mr-4"
           />
 
-          {/* User Details (Name and Email) */}
+
           <div className="flex flex-col">
-            <h2 className="text-xl font-mono font-semibold">John Doe</h2>
-            <p className="text-gray-500 text-sm font-mono">johndoe@example.com</p>
+            <h2 className="text-xl font-mono font-semibold">
+              {user?.fullName || 'Guest User'} 
+            </h2>
+            <p className="text-gray-500 text-sm font-mono">
+              {user?.email || 'guest@example.com'} 
+            </p>
           </div>
         </div>
 
@@ -85,14 +92,26 @@ const UserProfile = ({ isOpen, toggleProfile }) => {
                 Edit Profile
               </Link>
             </li>
-            <li>
-              <button 
-                onClick={handleLogout}
-                className='text-red-600 text-start px-4 text-xl font-semibold py-2 w-full block border-b border-gray-300'
-              >
-                Logout
-              </button>
-            </li>
+            {user ? (
+              <li>
+                <button 
+                  onClick={handleLogout}
+                  className='text-red-600 text-start px-4 text-xl font-semibold py-2 w-full block border-b border-gray-300'
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link 
+                  onClick={toggleProfile}
+                  to="/login" 
+                  className='text-blue-600  px-4 text-xl font-semibold py-2 w-full block border-b border-gray-300'
+                >
+                  Login
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
 

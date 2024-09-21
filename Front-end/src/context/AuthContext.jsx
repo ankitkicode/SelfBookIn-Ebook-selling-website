@@ -1,5 +1,7 @@
 import  { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance';
+import {jwtDecode} from 'jwt-decode';
 
 // Create context
 const AuthContext = createContext();
@@ -8,47 +10,104 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const login = ({ email, password }) => {
-    console.log('User logged in:', { email, password });
+  // Function to store token in localStorage
+  const storeToken = (token) => {
+    localStorage.setItem('authToken', token);
   };
 
-  const register = ({ fullName, email, number, password }) => {
-    console.log('User registered:', { fullName, email, number, password });
+  // Function to remove token from localStorage
+  const clearToken = () => {
+    localStorage.removeItem('authToken');
   };
 
-  // Forgot password
-  const forgotPassword = async (email) => {
+
+  const login = async ({ email, password }) => {
+    setLoading(true); 
+  
+    try {
+      const response = await axiosInstance.post('/auth/login', {
+        email,
+        password,
+      });
+      // console.log('User logged in:', response.data);
+      const { token, user } = response.data; 
+      storeToken(token); 
+      setUser(user); 
+      navigate('/'); 
+    } catch (error) {
+      setError('Login failed. Please check your credentials and try again.');
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false); 
+    }
+  };
+  
+
+ const register = async ({ fullName, email, number, password }) => {
     setLoading(true);
-    // try {
-    // //   const data = await mockAPI({ email }, true);
-    //   console.log('Password reset email sent to:', data);
-    //   alert('Password reset link sent to your email');
-    // } catch (error) {
-    //   console.error('Forgot password failed:', error.message);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const response = await axiosInstance.post('/auth/register', {
+        fullName,
+        email,
+        number,
+        password,
+      });
+      // console.log('User registered:', response.data);
+      const token = response.data.token; 
+      storeToken(token); 
+      navigate('/');
+    } catch (err) {
+      setError('Registration failed. Please try again.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
-
   // Logout function to clear user data
   const logout = () => {
     setUser(null);
-    // Optionally, clear the token from localStorage
-    // localStorage.removeItem('authToken');
+    clearToken()
     navigate('/login');
   };
 
-  // Check if user is logged in when app starts (e.g., from localStorage)
-  useEffect(() => {
+
+useEffect(() => {
     setLoading(true);
-    const storedUser = null; // Example: JSON.parse(localStorage.getItem('authToken'));
-    if (storedUser) {
-      setUser(storedUser);
+    const token = localStorage.getItem('authToken'); 
+  
+    if (token) {
+      try {
+        // Decode the token to get user info
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken,"======================")
+        const userId = decodedToken.userId;
+        // Optionally fetch more user details
+        const fetchUserData = async () => {
+          try {
+            const response = await axiosInstance.get(`/user/${userId}`,
+              {headers: { Authorization: `Bearer ${token}` }},
+            );
+            console.log('User data:', { ...response.data,token})
+            setUser(response.data); 
+          } catch (err) {
+            console.error('Error fetching user data:', err);
+          }
+        };
+  
+        fetchUserData();
+      } catch (err) {
+        console.error('Invalid token:', err);
+        clearToken(); 
+      }
     }
+  
     setLoading(false);
   }, []);
+
+  
 
   return (
     <AuthContext.Provider
@@ -56,9 +115,9 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         register,
-        forgotPassword,
         logout,
         loading,
+        error,
       }}
     >
       {!loading && children}

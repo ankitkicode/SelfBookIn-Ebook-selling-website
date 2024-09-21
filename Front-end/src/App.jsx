@@ -16,15 +16,22 @@ import EditProfile from './user/EditProfile'
 import SavedEbooks from './user/SavedEbooks'
 import LikedEbooks from './user/LikedEbooks'
 import YourEBooks from './user/YourEBooks'
+import ProtectedRoute from './protected/Protected'
+
 
 function App() {
 
   return (
     <>
+
     <Navbar/>
     <Routes>
         {/* <Route path="/" element={<AuthRoutes />} /> */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={
+         
+            <Home />
+      
+          } />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
