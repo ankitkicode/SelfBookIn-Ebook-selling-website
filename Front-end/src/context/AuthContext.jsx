@@ -1,7 +1,7 @@
-import  { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 // Create context
 const AuthContext = createContext();
@@ -23,16 +23,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('authToken');
   };
 
-
   const login = async ({ email, password }) => {
     setLoading(true); 
-  
     try {
       const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
-      // console.log('User logged in:', response.data);
       const { token, user } = response.data; 
       storeToken(token); 
       setUser(user); 
@@ -44,9 +41,8 @@ export const AuthProvider = ({ children }) => {
       setLoading(false); 
     }
   };
-  
 
- const register = async ({ fullName, email, number, password }) => {
+  const register = async ({ fullName, email, number, password }) => {
     setLoading(true);
     try {
       const response = await axiosInstance.post('/auth/register', {
@@ -55,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         number,
         password,
       });
-      // console.log('User registered:', response.data);
       const token = response.data.token; 
       storeToken(token); 
       navigate('/');
@@ -66,48 +61,56 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
   // Logout function to clear user data
   const logout = () => {
     setUser(null);
-    clearToken()
+    clearToken();
     navigate('/login');
   };
 
-
-useEffect(() => {
+  const updateProfile = async (profileData) => {
     setLoading(true);
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await axiosInstance.put('/edit-profile', profileData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      // console.log('Profile updated:', response.data);
+      setUser(response.data.user); 
+      navigate('/');
+    } catch (err) {
+      setError('Failed to update profile. Please try again.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     const token = localStorage.getItem('authToken'); 
-  
     if (token) {
       try {
-        // Decode the token to get user info
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken,"======================")
         const userId = decodedToken.userId;
-        // Optionally fetch more user details
         const fetchUserData = async () => {
           try {
-            const response = await axiosInstance.get(`/user/${userId}`,
-              {headers: { Authorization: `Bearer ${token}` }},
-            );
-            console.log('User data:', { ...response.data,token})
+            const response = await axiosInstance.get(`/user/${userId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
             setUser(response.data); 
           } catch (err) {
             console.error('Error fetching user data:', err);
           }
         };
-  
         fetchUserData();
       } catch (err) {
         console.error('Invalid token:', err);
         clearToken(); 
       }
     }
-  
     setLoading(false);
-  }, []);
-
-  
+  }, []); // Removed updateProfile from dependency array
 
   return (
     <AuthContext.Provider
@@ -118,6 +121,7 @@ useEffect(() => {
         logout,
         loading,
         error,
+        updateProfile,
       }}
     >
       {!loading && children}
@@ -125,5 +129,4 @@ useEffect(() => {
   );
 };
 
-// Export the context to be used by other components
 export default AuthContext;

@@ -1,35 +1,11 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext"; // Import AuthContext
 
 const YourEBooks = () => {
-  // Dummy data for eBooks
-  const [eBooks] = useState([
-    {
-      id: 1,
-      title: "React Basics",
-      price: 299,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 2,
-      title: "Advanced JavaScript",
-      price: 499,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 3,
-      title: "Web Development",
-      price: 399,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 4,
-      title: "CSS Mastery",
-      price: 199,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-  ]);
-  
+  // Access the user and eBooks from the AuthContext
+  const { user } = useContext(AuthContext);
+  const yourBooks = user?.yourBooks || []; 
 
   return (
     <div className="h-auto w-full px-9 md:px-[8%] pb-5 overflow-hidden">
@@ -40,8 +16,10 @@ const YourEBooks = () => {
       </div>
       {/* Grid Section */}
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
-        {eBooks.length > 0 ? (
-          eBooks.map((ebook) => (
+        {yourBooks
+.length > 0 ? (
+          yourBooks
+.map((ebook) => (
             <div
               key={ebook.id}
               className="shadow-md bg-slate-50 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono flex flex-col h-full"
@@ -74,7 +52,7 @@ const YourEBooks = () => {
           ))
         ) : (
           <div className="col-span-4 text-center h-[60vh] text-gray-500 text-lg">
-            You haven't Saved any eBooks yet.
+            You haven't buy any eBooks yet.
           </div>
         )}
       </div>

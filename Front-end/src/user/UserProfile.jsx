@@ -34,13 +34,16 @@ const UserProfile = ({ isOpen, toggleProfile }) => {
         </div>
 
         {/* User Info Section */}
-        <div className="flex items-center p-4">
-          {/* User Image */}
+        <div className="flex items-center p-4 ">
+          
+          <div className='relative w-[80px] h-[80px] overflow-hidden mr-2'>
           <img
-            src={user?.avatarUrl || 'https://via.placeholder.com/100'} // Display user's avatar if available, otherwise use a placeholder
+            src={user.profileImage || 'https://via.placeholder.com/100'} 
             alt="User Avatar"
-            className="rounded-full w-18 h-18 mr-4"
+            className="rounded-full bg-zinc-600 h-full w-full  object-cover mr-4"
           />
+          </div>
+         
 
 
           <div className="flex flex-col">
@@ -86,7 +89,7 @@ const UserProfile = ({ isOpen, toggleProfile }) => {
             <li>
               <Link 
               onClick={toggleProfile}
-                to="/profile/edit/0" 
+                to={`/profile/edit/${user?._id}`} 
                 className='text-gray-600  px-4 text-xl font-semibold py-2 w-full block border-b border-gray-300'
               >
                 Edit Profile

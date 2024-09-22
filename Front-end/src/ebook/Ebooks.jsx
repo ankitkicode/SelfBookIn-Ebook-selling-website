@@ -1,5 +1,4 @@
 // import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { useContext, useState } from "react";
 import { Link,  } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";

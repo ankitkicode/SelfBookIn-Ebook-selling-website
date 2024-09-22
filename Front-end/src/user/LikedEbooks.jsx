@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import AuthContext from "../context/AuthContext"; 
 
 const LikedEbooks = () => {
+  // Access user and liked eBooks from AuthContext
+  const { user } = useContext(AuthContext);
+  const likedEbooks = user?.likedEbooks || []; 
 
   const [likedBooks, setLikedBooks] = useState({});
 
@@ -14,35 +18,6 @@ const LikedEbooks = () => {
     }));
   };
 
-  // Dummy data for liked eBooks
-  const [likedEBooks] = useState(
-    [
-    {
-      id: 1,
-      title: "React Basics",
-      price: 299,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 2,
-      title: "Advanced JavaScript",
-      price: 499,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 3,
-      title: "Web Development",
-      price: 399,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-    {
-      id: 4,
-      title: "CSS Mastery",
-      price: 199,
-      image: "https://via.placeholder.com/150", // Placeholder for eBook image
-    },
-  ]);
-
   return (
     <div className="h-auto w-full px-9 md:px-[8%] pb-5 overflow-hidden">
       {/* Title Section */}
@@ -53,27 +28,26 @@ const LikedEbooks = () => {
 
       {/* Grid Section */}
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
-        {likedEBooks.length > 0 ? (
-          likedEBooks.map((ebook) => (
+        {likedEbooks.length > 0 ? (
+          likedEbooks.map((ebook) => (
             <div
               key={ebook.id}
               className="shadow-md relative bg-slate-50 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono flex flex-col h-full"
             >
- {/* Like Button (Top Left Corner) */}
- <div className="absolute top-2 left-2 z-10">
-            <button
-              onClick={() => toggleLike(ebook.id)}
-              className="text-xl focus:outline-none"
-            >
-              {/* Conditional rendering of the like button (filled or outlined heart) */}
-              {likedBooks[ebook.id] ? (
-                <FaHeart className="text-red-500" /> // Filled heart if liked
-              ) : (
-                <FaRegHeart className="text-gray-400" /> // Outlined heart if not liked
-              )}
-            </button>
-          </div>
-
+              {/* Like Button (Top Left Corner) */}
+              <div className="absolute top-2 left-2 z-10">
+                <button
+                  onClick={() => toggleLike(ebook.id)}
+                  className="text-xl focus:outline-none"
+                >
+                  {/* Conditional rendering of the like button (filled or outlined heart) */}
+                  {likedBooks[ebook.id] ? (
+                    <FaHeart className="text-red-500" /> // Filled heart if liked
+                  ) : (
+                    <FaRegHeart className="text-gray-400" /> // Outlined heart if not liked
+                  )}
+                </button>
+              </div>
 
               {/* Image and Title Section */}
               <Link to={`/e-booksdetails/${ebook.id}`} className="block flex-grow">
@@ -103,7 +77,7 @@ const LikedEbooks = () => {
           ))
         ) : (
           <div className="col-span-4 text-center h-[60vh] text-gray-500 text-lg">
-            You haven't liked any eBooks yet.
+            You have not liked any eBooks yet.
           </div>
         )}
       </div>
