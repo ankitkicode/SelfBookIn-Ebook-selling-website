@@ -55,8 +55,8 @@ const EbookSchema = new mongoose.Schema({
   },
   uploadDate: {
     type: Date,
-    default: Date.now, // Set upload date to the current date by default
-  },
+    default: Date.now, 
+  }
 
 });
 

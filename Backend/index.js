@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const authRouter = require('./routes/authRouter');
 const userRouter = require('./routes/userRouter');
+const ebookRoutes = require('./routes/ebookRouter');
 const app = express();
 const port = process.env.PORT || 3000;
 const connectDB = require('./database/dbConnection');
@@ -30,7 +31,8 @@ app.get('/', (req, res) => {
 );
 
 app.use('/api/auth',authRouter );
-app.use('/api',userRouter)
+app.use('/api',userRouter);
+app.use('/api/ebooks', ebookRoutes);
 
 // Error handling middleware (optional)
 app.use((err, req, res, next) => {

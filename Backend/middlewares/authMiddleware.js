@@ -14,7 +14,6 @@ const auth = (req, res, next) => {
   try {
     // Verify the token
     const decoded = jwt.verify(token, JWT_SECRET);
-    // console.log(decoded,"from authmiddleware======")
     req.user = decoded.userId;
     next();
   } catch (err) {
