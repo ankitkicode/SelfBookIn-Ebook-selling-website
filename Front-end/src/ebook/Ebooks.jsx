@@ -14,7 +14,7 @@ const Ebooks = () => {
   const toggleLike = (id) => {
     setLikedBooks((prevLikedBooks) => ({
       ...prevLikedBooks,
-      [id]: !prevLikedBooks[id], // Toggle like status
+      [id]: !prevLikedBooks[id], 
     }));
   };
   return (
