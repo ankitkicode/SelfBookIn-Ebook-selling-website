@@ -53,7 +53,7 @@ const EbookDetails = () => {
               ebookId: ebook._id,
             }, {
               headers: {
-                'Authorization': `Bearer ${localStorage.getItem("authToken")}`, // Set the Authorization header here
+                'Authorization': `Bearer ${localStorage.getItem("authToken")}`, 
               }
             });
 

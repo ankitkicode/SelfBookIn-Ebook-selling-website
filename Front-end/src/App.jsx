@@ -19,6 +19,7 @@ import YourEBooks from './user/YourEBooks'
 import ProtectedRoute from './protected/Protected'
 import DownloadEbook from './ebook/DownloadEbook'
 import AdminRoute from './protected/Admin'
+import EbookReader from './ebook/EbookReader'
 
 
 function App() {
@@ -76,6 +77,13 @@ function App() {
 
         } />
 
+<Route path="/read-ebook/:ebookId" element={
+    <ProtectedRoute>
+      <EbookReader/>
+    </ProtectedRoute>
+  } />
+ 
+  
 
 
 

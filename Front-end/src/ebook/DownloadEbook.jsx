@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ProductContext } from "../context/ProductContext";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import { useNavigate } from "react-router-dom";
+
 
 const DownloadEbook = () => {
   const { id } = useParams();
@@ -11,6 +11,7 @@ const DownloadEbook = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [downloadLink, setDownloadLink] = useState(null);
   const handleDownload = async () => {
     if (!ebook) {
       setError("Ebook not found.");
@@ -26,21 +27,14 @@ const DownloadEbook = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },
-        responseType: 'blob', // Important: This tells Axios to treat the response as binary data (file).
+        // responseType: 'blob', 
       });
-  
+      console.log(response.data)
       // Create a download URL from the blob
-      const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
-      
-      // Use a hidden anchor tag to trigger the download
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.setAttribute('download', 'ebook.pdf'); // You can customize the file name
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-  
-      setSuccess(true); // Set success to true after successful download
+      const downloadUrl = response.data.downloadUrl;
+      window.open(downloadUrl, '_blank');
+     
+      setSuccess(true); 
     } catch (error) {
       // Properly handle the error message from the server
       setError(error.response?.data?.message || 'Error downloading the ebook');

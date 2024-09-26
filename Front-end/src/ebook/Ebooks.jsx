@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";
 
 const Ebooks = () => {
-  const { ebooks, error, loading,} = useContext(ProductContext);
-
+  const { ebooks, error, loading,userEbooks, user} = useContext(ProductContext);
+  console.log('home se user ek books ', {userEbooks,ebooks,user})
   if (loading) return <div>Loading eBooks...</div>;
   if (error) return <div>{error}</div>;
 
@@ -22,7 +22,7 @@ const Ebooks = () => {
           return (
             <div
               key={ebook._id}
-              className="shadow-md relative bg-slate-50 border-[.5px] border-gray-400 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono flex flex-col h-full"
+              className="shadow-md relative bg-slate-100 hover:shadow-lg overflow-hidden transition-shadow duration-300 font-mono flex flex-col h-full"
             >
               {/* Like Button (Top Left Corner) */}
             

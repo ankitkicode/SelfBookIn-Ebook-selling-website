@@ -32,13 +32,10 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
   yourBooks: [
-    {
-      bookId: {
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Book',
       },
-      addedAt: { type: Date, default: Date.now },
-    },
   ],
   savedEbooks: [
     {

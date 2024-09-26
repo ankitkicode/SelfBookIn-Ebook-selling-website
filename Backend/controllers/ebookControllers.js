@@ -1,6 +1,7 @@
 // controllers/ebookController.js
 require("dotenv").config();
 const EBook = require('../models/ebookModel');
+const userModel = require("../models/userModel.js")
 const Purchase = require("../models/purchase");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
@@ -51,14 +52,14 @@ const addEBook = async (req, res) => {
   }
 };
 
-
-
 // Generate signed URL for download
 const getEbookDownloadUrl = async (req, res) => {
   try {
     const { ebookId } = req.params;
     const ebook = await EBook.findById(ebookId);
     const userId = req.user;
+    const user = await userModel.findById(userId);
+
 
     if (!ebook) {
       return res.status(404).json({ message: 'eBook not found' });
@@ -67,7 +68,12 @@ const getEbookDownloadUrl = async (req, res) => {
     if (!userId ) {
       return res.status(403).json({ message: 'Access denied.' });
     }
-
+    
+    // Check if the eBook ID is already in user's yourBooks
+    if (user.yourBooks.includes(ebookId)) {
+      return res.status(400).json({ message: 'You have already downloaded this eBook. Go to yourebooks for reading.' });
+    }
+    
  // Find if the user has purchased the eBook
  const purchase = await Purchase.findOne({ userId, ebookId });
 
@@ -80,11 +86,15 @@ const getEbookDownloadUrl = async (req, res) => {
     const decodedKey = decodeURIComponent(key);
   
     const signedUrl = await getSignedUrlForDownload(decodedKey);
+    // Update the user's purchased books
+    user.yourBooks.push(ebookId); 
+    await user.save();
  
     res.json({ downloadUrl: signedUrl });
 
   } catch (error) {
     console.error('Error generating signed URL:', error);
+
     res.status(500).json({ message: 'Failed to generate download link' });
   }
 };
@@ -172,17 +182,14 @@ const savedEbook =  async (req, res) => {
 
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID, // Replace with your Razorpay Key ID
-  key_secret: process.env.RAZORPAY_KEY_SECRET // Replace with your Razorpay Secret
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET 
 });
 
 const paymentEbook =  async (req, res) => {
    const { ebookId } = req.body;
    const ebook = await  EBook.findById(ebookId);
    const amount = ebook.price;
-
-
-     
 
   const options = {
     amount: amount * 100, 
@@ -208,26 +215,44 @@ const paymentEbook =  async (req, res) => {
 }
 
 const paymentSuccess = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, ebookId } = req.body;
+  try {
+    const userId = req.user;
+    const user = await userModel.findById(userId);
 
-  // Verify the payment signature
-  const isSignatureValid = verifyPaymentSignature(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
 
-  if (!isSignatureValid) {
-    return res.status(400).json({ error: 'Payment verification failed.' });
-  }
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, ebookId } = req.body;
+
+    // Verify the payment signature
+    const isSignatureValid = verifyPaymentSignature(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+
+    if (!isSignatureValid) {
+      return res.status(400).json({ error: 'Payment verification failed.' });
+    }
+
     // Proceed with order processing
     const purchase = new Purchase({
-      userId: req.user,
+      userId,
       ebookId: ebookId,
-      paymentId: razorpay_payment_id, 
-      orderId: razorpay_order_id, 
-      status: 'paid', 
+      paymentId: razorpay_payment_id,
+      orderId: razorpay_order_id,
+      status: 'paid',
     });
-    
-  await purchase.save();
-  res.status(200).json({ message: 'Payment successfully', ebookId });
+
+     // Save the updated user with the purchased book
+
+    // Save the purchase record
+    await purchase.save();
+
+    res.status(200).json({ message: 'Payment successfully processed', ebookId });
+  } catch (error) {
+    console.error('Payment processing failed:', error);
+    res.status(500).json({ error: 'An error occurred during payment processing.' });
+  }
 };
+
 
 // Function to verify payment signature
 const verifyPaymentSignature = (paymentId, orderId, signature) => {
