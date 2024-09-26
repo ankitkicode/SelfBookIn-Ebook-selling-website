@@ -19,8 +19,8 @@ const uploadFileToS3 = (file) => {
 const getSignedUrlForDownload = (key, expiresIn = 60 * 10) => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: key, // S3 file key (e.g., file name or path)
-    Expires: expiresIn, // URL expiry time in seconds
+    Key: key,
+    Expires: expiresIn, 
   };
 
   return s3.getSignedUrlPromise('getObject', params); // Generate signed URL

@@ -40,20 +40,11 @@ const userSchema = new mongoose.Schema({
       addedAt: { type: Date, default: Date.now },
     },
   ],
-  likedEbooks: [
-    {
-      bookId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book',
-      },
-      likedAt: { type: Date, default: Date.now },
-    },
-  ],
   savedEbooks: [
     {
       bookId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book',
+        ref: 'Ebook',
       },
       savedAt: { type: Date, default: Date.now },
     },

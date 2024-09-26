@@ -33,22 +33,12 @@ const EbookSchema = new mongoose.Schema({
     type: Number,
     default: 0, 
   },
-//   reviews: {
-//     type: [{ 
-//       userId: mongoose.Schema.Types.ObjectId, // Link to the User model
-//       reviewText: String,
-//       rating: Number,
-//       date: {
-//         type: Date,
-//         default: Date.now,
-//       }
-//     }],
-//     default: [],
-//   },
-  likes: {
-    type: Number,
-    default: 0, // Default number of likes when the book is uploaded
-  },
+  likes: [
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+],
   salesCount: {
     type: Number,
     default: 0, 

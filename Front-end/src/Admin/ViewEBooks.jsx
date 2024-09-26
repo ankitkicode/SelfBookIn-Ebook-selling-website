@@ -30,20 +30,24 @@ const ViewEBooks = () => {
   }, [token]);
 
   // Handler for deleting an eBook
-  const handleDelete = async (id) => {
-    try {
-        const response =   await axiosInstance.delete(`/ebooks/${id}`,
-      {
-        headers: {
-          Authorization:`Bearer ${token}`
-        },  
-      }); 
-      console.log(response.data);
-      setEBooks((prevEBooks) => prevEBooks.filter((ebook) => ebook.id !== id));    } catch (err) {
-      setError("Failed to delete eBook");
-      console.error(err);
-    }
-  };
+const handleDelete = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/ebooks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    
+    // Update the eBooks state after successful deletion
+    setEBooks((prevEBooks) => prevEBooks.filter((ebook) => ebook._id !== id));
+    
+  } catch (err) {
+    setError("Failed to delete eBook");
+    console.error(err);
+  }
+};
+
 
   if (loading) {
     return <p className="text-center">Loading eBooks...</p>;

@@ -1,66 +1,65 @@
 // src/ProductContext.js
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
+import axiosInstance from '../utils/axiosInstance';
 
 // Create the context
 export const ProductContext = createContext();
 
 const ProductProvider = ({ children }) => {
   const [ebooks, setEbooks] = useState([]);
-  const [orders, setOrders] = useState([]);
-
-  // Function to add a new eBook
-  const addEBook = (newEBook) => {
-    setEbooks((prevEbooks) => [...prevEbooks, newEBook]);
-  };
-
-  // Function to view all eBooks
-  const viewEBooks = () => {
-    return ebooks;
-  };
-
-  // Function to place an order (for demo purposes, it simply adds to orders)
-  const placeOrder = (ebookId) => {
-    const ebook = ebooks.find((ebook) => ebook.id === ebookId);
-    if (ebook) {
-      setOrders((prevOrders) => [...prevOrders, ebook]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // Fetch eBooks from the backend
+  const fetchEbooks = async () => {
+    try {
+      const response = await axiosInstance.get("/ebooks/all");
+      // console.log("Response from ebooks API:", response.data);
+      setEbooks(response.data);  // Set the fetched eBooks in state
+      setLoading(false);          // Stop loading after data is fetched
+    } catch (err) {
+      setError("Failed to load eBooks");  // Set error if request fails
+      setLoading(false);                  // Stop loading after request failure
     }
   };
 
-  // Function to view all orders
-  const viewOrders = () => {
-    return orders;
-  };
 
-  // Sample products data (eBooks)
-  const sampleEbooks = [
-    {
-      id: 1,
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      price: 10.99,
-      rating: 4.5,
-      reviews: 120,
-      image: "https://images.meesho.com/images/products/269522068/6gkxe_512.jpg"
-    },
-    {
-      id: 2,
-      title: "1984",
-      author: "George Orwell",
-      price: 8.99,
-      rating: 4.7,
-      reviews: 200,
-      image: "https://images.meesho.com/images/products/269522068/6gkxe_512.jpg"
-    },
-    // Add more sample eBooks if needed
-  ];
+      // Function to toggle like
+      const toggleLike = async (ebookId, isLiked) => {
+        try {
+            const response = await axiosInstance.put(`/ebooks/${ebookId}/like`,
+                { like: isLiked },
+               {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                }
+               }
 
-  // Initialize state with sample eBooks
-  useState(() => {
-    setEbooks(sampleEbooks);
-  }, []);
+            );
+            console.log("Response from toggle like API:", response.data);
+            setEbooks((prevEbooks) =>
+                prevEbooks.map((ebook) =>
+                    ebook._id === ebookId ? response.data.ebook : ebook
+                )
+            );
+            
+        } catch (error) {
+            console.error("Failed to toggle like", error);
+        }
+    };
 
+useEffect(() => {
+    fetchEbooks();
+}, []);
+
+  // Provide ebooks, loading, and error states to children components
   return (
-    <ProductContext.Provider value={{ addEBook, viewEBooks, placeOrder, viewOrders }}>
+    <ProductContext.Provider value={{
+      ebooks,
+      loading,
+      error,
+      toggleLike,
+
+    }}>
       {children}
     </ProductContext.Provider>
   );

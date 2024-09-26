@@ -1,5 +1,9 @@
 // controllers/ebookController.js
+require("dotenv").config();
 const EBook = require('../models/ebookModel');
+const Purchase = require("../models/purchase");
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 const { uploadFileToS3, getSignedUrlForDownload } = require('../services/s3Service.js');
 
 
@@ -59,22 +63,26 @@ const getEbookDownloadUrl = async (req, res) => {
     if (!ebook) {
       return res.status(404).json({ message: 'eBook not found' });
     }
-    //  console.log({ebook,
-    //   ebookId,
-    //   userId,
-    //   from: 'from downloaddeddd'});
-
-     
-
     // Check if the user is authorized to download the eBook (for example, if they bought it)
     if (!userId ) {
       return res.status(403).json({ message: 'Access denied.' });
     }
 
-    // Generate signed URL for downloading the eBook PDF
-    const signedUrl = await getSignedUrlForDownload(ebook.pdfUrl);
+ // Find if the user has purchased the eBook
+ const purchase = await Purchase.findOne({ userId, ebookId });
 
+ if (!purchase) {
+   return res.status(403).json({ message: 'You have not purchased this eBook.' });
+ }
+
+    
+    const key = ebook.pdfUrl.split('/').pop();
+    const decodedKey = decodeURIComponent(key);
+  
+    const signedUrl = await getSignedUrlForDownload(decodedKey);
+ 
     res.json({ downloadUrl: signedUrl });
+
   } catch (error) {
     console.error('Error generating signed URL:', error);
     res.status(500).json({ message: 'Failed to generate download link' });
@@ -84,6 +92,7 @@ const getEbookDownloadUrl = async (req, res) => {
 const getAllEbooks = async (req,res)=>{
   try {
     const ebooks = await EBook.find({});
+    // console.log(ebooks)
     res.json(ebooks);
   } catch (error) {
     console.error('Error getting all ebooks:', error);
@@ -103,10 +112,140 @@ const deleteEbookById = async (req,res)=>{
     res.status(500).json({ message: 'Failed to delete ebook' });
   }
 }
+const likedEbook =  async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.user._id; 
+
+    // Check if the user has already liked the post
+    const post = await postModel.findById(postId);
+    const alreadyLikedIndex = post.likes.indexOf(userId);
+
+    if (alreadyLikedIndex === -1) {
+      // If the user hasn't liked the post, add their ID to the likes array
+      post.likes.push(userId);
+    } else {
+      // If the user has already liked the post, remove their ID from the likes array (dislike)
+      post.likes.splice(alreadyLikedIndex, 1);
+    }
+
+    // Save the post with the updated like status
+    await post.save();
+
+    // Send the updated like count along with the liked status
+    const likeCount = post.likes.length;
+    const liked = alreadyLikedIndex === -1; // If alreadyLikedIndex is -1, the user has just liked the post
+
+    res.json({ liked: liked, likeCount: likeCount });
+  } catch (error) {
+    console.error('Error liking/disliking post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const savedEbook =  async (req, res) => {
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
+    const postId = req.params.postId;
+
+    // Check if the post is already saved
+    const isSaved = user.saved.indexOf(postId);
+
+    if (isSaved === -1) {
+      // If the post is not already saved, save it
+      user.saved.push(postId);
+    } else {
+      user.saved.splice(isSaved, 1);
+    }
+
+    await user.save();
+    const save = isSaved === -1;
+
+
+    // Respond with the updated user object and the saved status
+    res.json({ user, saved: save });
+  } catch (error) {
+    console.error('Error saving post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID, // Replace with your Razorpay Key ID
+  key_secret: process.env.RAZORPAY_KEY_SECRET // Replace with your Razorpay Secret
+});
+
+const paymentEbook =  async (req, res) => {
+   const { ebookId } = req.body;
+   const ebook = await  EBook.findById(ebookId);
+   const amount = ebook.price;
+
+
+     
+
+  const options = {
+    amount: amount * 100, 
+    currency: "INR",
+    receipt: ebookId,
+    notes: {
+      ebookId: ebookId
+    }
+  };
+
+  try {
+    const order = await razorpay.orders.create(options);
+
+    res.json({
+      id: order.id,
+      currency: order.currency,
+      amount: order.amount,
+    });
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ error: 'Error creating order' });
+  }
+}
+
+const paymentSuccess = async (req, res) => {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, ebookId } = req.body;
+
+  // Verify the payment signature
+  const isSignatureValid = verifyPaymentSignature(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+
+  if (!isSignatureValid) {
+    return res.status(400).json({ error: 'Payment verification failed.' });
+  }
+    // Proceed with order processing
+    const purchase = new Purchase({
+      userId: req.user,
+      ebookId: ebookId,
+      paymentId: razorpay_payment_id, 
+      orderId: razorpay_order_id, 
+      status: 'paid', 
+    });
+    
+  await purchase.save();
+  res.status(200).json({ message: 'Payment successfully', ebookId });
+};
+
+// Function to verify payment signature
+const verifyPaymentSignature = (paymentId, orderId, signature) => {
+  const generatedSignature = crypto
+    .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+    .update(orderId + '|' + paymentId)
+    .digest('hex');
+
+  return generatedSignature === signature;
+}
 
 module.exports = {
   addEBook,
   getEbookDownloadUrl,
   getAllEbooks,
-  deleteEbookById
+  deleteEbookById,
+  likedEbook,
+  savedEbook,
+  paymentEbook,
+  paymentSuccess
 };
