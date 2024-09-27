@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ProductContext } from "../context/ProductContext";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 
 const DownloadEbook = () => {
@@ -12,6 +13,7 @@ const DownloadEbook = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [downloadLink, setDownloadLink] = useState(null);
+ 
   const handleDownload = async () => {
     if (!ebook) {
       setError("Ebook not found.");
@@ -29,18 +31,19 @@ const DownloadEbook = () => {
         },
         // responseType: 'blob', 
       });
-      console.log(response.data)
+      // console.log(response.data)
       // Create a download URL from the blob
       const downloadUrl = response.data.downloadUrl;
       window.open(downloadUrl, '_blank');
-     
-      setSuccess(true); 
+      setSuccess(true);
+      toast.success("file downloading...");
     } catch (error) {
       // Properly handle the error message from the server
       setError(error.response?.data?.message || 'Error downloading the ebook');
+      toast.error(error.response?.data?.message)
       console.error('Error downloading ebook:', error);
     } finally {
-      setLoading(false); // Set loading false after everything is complete
+      setLoading(false); 
     }
   };
   

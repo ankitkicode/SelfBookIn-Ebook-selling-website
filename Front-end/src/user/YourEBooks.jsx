@@ -40,7 +40,7 @@ const YourEBooks = () => {
 
               {/* View Details Button */}
               <Link
-                to={`/read-ebook/${ebook._id}`} // Link to the read page of the eBook
+                to={`/read-ebook/${ebook._id}`} 
                 className="inline-flex w-full items-center justify-center py-3 bg-black border-black border-[.5px] hover:text-black text-white text-[15px] font-medium hover:bg-zinc-100 transition duration-300 mt-auto"
               >
                 Read Ebook

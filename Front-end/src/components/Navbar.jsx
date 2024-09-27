@@ -73,7 +73,7 @@ const Navbar = () => {
           {user && <UserProfile isOpen={isProfileOpen} toggleProfile={toggleProfile} />}
         </div>
 
-        <div className="ml-0 md:hidden">
+        <div className="ml-0 cursor-pointer md:hidden">
           {isMenuOpen ? (
             <RiCloseLine className="text-2xl text-gray-600" onClick={toggleMenu} />
           ) : (
@@ -88,46 +88,84 @@ const Navbar = () => {
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex flex-col h-full items-start justify-between p-4 font-mono">
-          <div>
-            <RiCloseLine className="text-2xl text-gray-600" onClick={toggleMenu} />
-            <div className='flex flex-col items-start justify-between p-3'>
-              <Link to="/" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}>
-                <i className="ri-home-5-fill mr-1"></i> Home
-              </Link>
-              <Link to="/e-books" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}>
-                <i className="ri-store-2-fill mr-2"></i> Ebooks
-              </Link>
-              <Link to="/about" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}>
-                <i className="ri-shopping-cart-fill mr-1"></i> About Us
-              </Link>
-              <Link to="/contact" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}>
-                <i className="ri-user-2-fill mr-1"></i> Contact Us
-              </Link>
-              {/* {!user && (
-                <Link to="/login" className='text-gray-600 text-xl font-semibold py-2' onClick={toggleMenu}>
-                  <i className="ri-user-2-fill mr-1"></i> Login
-                </Link>
-              )} */}
-            </div>
-          </div>
-          <div className="socialicons text-xl flex items-center justify-between">
-            <div className='gap-2 flex'>
-              <a href="https://www.facebook.com" className="text-gray-600 text-xl font-semibold py-2" onClick={toggleMenu}>
-                <FaFacebook className="mr-2" />
-              </a>
-              <a href="https://www.twitter.com" className="text-gray-600 text-xl font-semibold py-2" onClick={toggleMenu}>
-                <FaTwitter className="mr-2" />
-              </a>
-              <a href="https://www.instagram.com" className="text-gray-600 text-xl font-semibold py-2" onClick={toggleMenu}>
-                <FaInstagram className="mr-2" />
-              </a>
-              <a href="https://www.instagram.com" className="text-gray-600 text-xl font-semibold py-2" onClick={toggleMenu}>
-                <FaYoutube className="mr-2" />
-              </a>
-            </div>
-          </div>
-        </div>
+{/* Redesigned Menu Component with Social Icons */}
+<div className="flex flex-col h-full items-start justify-between p-4 font-mono bg-white">
+  {/* Close Button */}
+  <div className="self-end mb-4 mr-5">
+    <button
+      className="text-2xl text-gray-600 font-bold focus:outline-none"
+      onClick={toggleMenu}
+    >
+      X
+    </button>
+  </div>
+
+  {/* Menu Links */}
+  <div className="w-full ">
+    <Link
+      to="/"
+      className="block text-gray-800 border-y-2 text-xl font-semibold py-3 hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      Home
+    </Link>
+    <Link
+      to="/e-books"
+      className="block text-gray-800 border-b-2 text-xl font-semibold py-3 hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      Ebooks
+    </Link>
+    <Link
+      to="/about"
+      className="block text-gray-800 border-b-2 text-xl font-semibold py-3 hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      About Us
+    </Link>
+    <Link
+      to="/contact"
+      className="block text-gray-800 border-b-2 text-xl font-semibold py-3 hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      Contact Us
+    </Link>
+  </div>
+
+  {/* Social Media Icons */}
+  <div className="mt-auto w-full flex items-center justify-start space-x-4 pt-6">
+    <a
+      href="https://www.facebook.com"
+      className="text-gray-600 text-xl hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      <FaFacebook />
+    </a>
+    <a
+      href="https://www.twitter.com"
+      className="text-gray-600 text-xl hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      <FaTwitter />
+    </a>
+    <a
+      href="https://www.instagram.com"
+      className="text-gray-600 text-xl hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      <FaInstagram />
+    </a>
+    <a
+      href="https://www.youtube.com"
+      className="text-gray-600 text-xl hover:text-indigo-600 transition duration-300 ease-in-out"
+      onClick={toggleMenu}
+    >
+      <FaYoutube />
+    </a>
+  </div>
+</div>
+
+
       </div>
     </div>
   );

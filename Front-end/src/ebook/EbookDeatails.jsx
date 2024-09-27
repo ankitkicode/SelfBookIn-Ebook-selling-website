@@ -5,6 +5,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { ProductContext } from "../context/ProductContext";
 import AuthContext from "../context/AuthContext";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const EbookDetails = () => {
   const { id } = useParams();
@@ -59,12 +60,14 @@ const EbookDetails = () => {
 
             // If payment verification is successful
             if (paymentVerificationResponse.status === 200) {
+              // Update the ebook status to "purchased"
+              toast.success("payment successful")
               // Redirect to the download page
               navigate(`/download/${ebook._id}`);
             }
           } catch (error) {
             console.error('Error verifying payment:', error);
-
+            toast.error("payment failed");
           } finally {
             setLoading(false);
           }

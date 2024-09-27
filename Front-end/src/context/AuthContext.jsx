@@ -4,6 +4,8 @@ import axiosInstance from '../utils/axiosInstance';
 import {jwtDecode} from 'jwt-decode'; 
 // Create context
 const AuthContext = createContext();
+import {  toast } from 'react-toastify';
+
 
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
@@ -20,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   // Function to remove token from localStorage
   const clearToken = () => {
     localStorage.removeItem('authToken');
+
   };
 
   // Login function
@@ -33,16 +36,19 @@ export const AuthProvider = ({ children }) => {
       const { token, user } = response.data;
       storeToken(token);
       setUser(user);
+      toast.success(response.data.message);
       navigate('/');
     } catch (error) {
       setError(error.response?.data?.message || 'Login failed. Please check your credentials and try again.');
+      toast.error(error.response?.data?.message);
       console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Register function
+ 
+
   const register = async ({ fullName, email, number, password }) => {
     setLoading(true);
     try {
@@ -52,24 +58,30 @@ export const AuthProvider = ({ children }) => {
         number,
         password,
       });
-      const { token } = response.data;
+      
+      const { token, message } = response.data;
       storeToken(token);
       const decodedToken = jwtDecode(token); // Decode token to get user info
-      setUser(decodedToken); // Set user after decoding token
+      setUser(decodedToken); 
+      
+      toast.success(message || 'Registration successful!');
       navigate('/');
     } catch (err) {
       setError('Registration failed. Please try again.');
+      toast.error(err.response?.data?.message || 'Registration failed. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
+  
 
   // Logout function
   const logout = () => {
     setUser(null);
     clearToken();
     navigate('/login');
+    toast.success("logged out successfully ")
   };
 
   // Update profile
@@ -81,10 +93,12 @@ export const AuthProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(response.data.user);
+      toast.success(response.data.message);
       navigate('/');
     } catch (err) {
       setError('Failed to update profile. Please try again.');
-      console.error(err);
+      toast.success(err.data.message);
+      // console.error(err,"form register");
     } finally {
       setLoading(false);
     }

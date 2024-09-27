@@ -4,14 +4,15 @@ import { useParams, Link } from 'react-router-dom';
 import PDF from 'react-pdf-js'; // Assuming you're using react-pdf-js
 
 const EbookReader = () => {
-  const { id } = useParams(); // Get the ebook ID from the URL
-  const { userEbooks } = useContext(ProductContext); 
-  const ebook = userEbooks.find((ebook) => ebook.id === id); // Find the ebook by ID
-  const [numPages, setNumPages] = useState(null); // Total number of pages
-  const [pageNumber, setPageNumber] = useState(1); // Current page number
-  const [scale, setScale] = useState(1.0); // Scale for zooming
+  const { ebookId } = useParams(); 
+  console.log(ebookId,"from ebook reader")
+  const { userEbooks } = useContext(ProductContext);
+  console.log(userEbooks,"from ebboks ") 
+  const ebook = userEbooks.find((ebook) => ebook._id === ebookId); 
+  const [numPages, setNumPages] = useState(null); 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [scale, setScale] = useState(1.0); 
 
-  // If the eBook is not found, show an error message
   if (!ebook) {
     return (
       <div className="text-center mt-10">
@@ -48,10 +49,10 @@ const EbookReader = () => {
   };
 
   return (
-    <div className="pdf-reader-container min-h-screen bg-gray-100 p-2">
+    <div className="pdf-reader-container  min-h-screen bg-gray-100 p-2">
       {/* Display the eBook title */}
       <h2 className="text-xl md:text-2xl font-semibold my-4 text-center">{ebook.title}</h2>
-      <div className="flex items-center justify-between w-[90%] md:w-[55vw] m-auto mt-4">
+      <div className="flex items-center justify-between w-[90%] md:w-[52vw] mb-2 m-auto mt-4">
 
                {/* Zoom Out Button */}
                <button
@@ -78,8 +79,8 @@ const EbookReader = () => {
         
       </div>
       {/* PDF Viewer */}
-      <div className="w-full h-[70vh] md:h-[100vh] relative flex justify-center items-center">
-        <div className="w-full md:w-[130vh] md:m-auto flex items-center justify-center h-full p-2">
+      <div className="w-full h-[70vh]  md:h-[100vh] relative flex justify-center items-center">
+        <div className="w-full md:w-[120vh] bg-cyan-600 md:m-auto flex items-center justify-center h-full p-2">
           <div className="h-full w-full bg-white shadow-lg p-2 overflow-auto">
             <PDF
               file={ebook.pdfUrl} 
@@ -94,7 +95,7 @@ const EbookReader = () => {
       </div>
 
       {/* Zoom and Page Navigation Controls */}
-      <div className="flex items-center justify-between w-full md:w-[57vw] m-auto mt-4">
+      <div className="flex items-center justify-between w-full md:w-[53vw] m-auto mt-4">
 
         {/* Previous Page Button */}
         <button 

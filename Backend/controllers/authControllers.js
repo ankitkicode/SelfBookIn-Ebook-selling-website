@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "yourSecretKey";
 
 
 const createUser = async (req, res) => {
-  console.log(req.body,"===============")
+  // console.log(req.body,"===============")
   const { fullName, email, number, password } = req.body;
   
   try {

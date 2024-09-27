@@ -60,7 +60,6 @@ const EditProfile = () => {
     if (file) {
       setLoading(true);
       const imageUrl = await uploadToCloudinary(file); 
-      // console.log(imageUrl,"---------------------")
 
       if (imageUrl) {
         setProfileData({
