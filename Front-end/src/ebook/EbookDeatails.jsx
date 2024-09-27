@@ -18,7 +18,7 @@ const EbookDetails = () => {
 
 
   const handleBuyNow = async (ebook) => {
-    console.log(user)
+
     if (!user) {
       navigate('/login');
       return;

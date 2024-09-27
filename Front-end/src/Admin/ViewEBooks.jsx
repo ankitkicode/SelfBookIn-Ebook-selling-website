@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const ViewEBooks = () => {
   const [eBooks, setEBooks] = useState([]);
@@ -37,13 +38,16 @@ const handleDelete = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
+
     
     // Update the eBooks state after successful deletion
     setEBooks((prevEBooks) => prevEBooks.filter((ebook) => ebook._id !== id));
+    toast.success(response.data.message)
     
   } catch (err) {
     setError("Failed to delete eBook");
+    toast.error(err.response?.data?.message || 'An error occurred while adding the eBook');
     console.error(err);
   }
 };

@@ -19,17 +19,6 @@ const addEBook = async (req, res) => {
     
     const coverImageUpload = await uploadFileToS3(coverImage);
     const pdfFileUpload = await uploadFileToS3(pdfFile);
-    // console.log({
-    //   coverImageUpload,
-    //   pdfFileUpload,
-    //   title, 
-    //   author, 
-    //   description, 
-    //   price, 
-    //   category 
-
-    // })
-
     // Create new eBook document
     const newEBook = new EBook({
       title,
@@ -102,7 +91,7 @@ const getEbookDownloadUrl = async (req, res) => {
 const getAllEbooks = async (req,res)=>{
   try {
     const ebooks = await EBook.find({});
-    // console.log(ebooks)
+   
     res.json(ebooks);
   } catch (error) {
     console.error('Error getting all ebooks:', error);
@@ -114,7 +103,7 @@ const getAllEbooks = async (req,res)=>{
 const deleteEbookById = async (req,res)=>{
   try {
     const {id} = req.params;
-    console.log(id)
+   
     await EBook.findByIdAndDelete(id);
     res.json({message: 'Ebook deleted successfully'});
   } catch (error) {

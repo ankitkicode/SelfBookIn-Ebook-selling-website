@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const AddEBook = () => {
   const [title, setTitle] = useState("");
@@ -29,7 +30,7 @@ const AddEBook = () => {
     formData.append('coverImage', coverImage);
     formData.append('pdfFile', pdfFile);
 
-    setLoading(true); // Set loading to true when form submission starts
+    setLoading(true); 
 
     try {
       const response = await axiosInstance.post('/ebooks/add-ebook', formData, {
@@ -38,7 +39,8 @@ const AddEBook = () => {
           'Authorization': `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message)
 
       // Reset form fields after successful submission
       setTitle("");
@@ -50,8 +52,9 @@ const AddEBook = () => {
       setPdfFile(null);
     } catch (error) {
       console.error("Error adding eBook:", error);
+      toast.error(error.response?.data?.message || 'An error occurred while adding the eBook');
     } finally {
-      setLoading(false); // Set loading back to false after form submission completes
+      setLoading(false);
     }
   };
 
