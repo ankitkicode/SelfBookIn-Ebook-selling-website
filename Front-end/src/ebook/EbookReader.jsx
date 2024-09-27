@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import { useParams, Link } from 'react-router-dom';
-import PDF from 'react-pdf-js'; // Assuming you're using react-pdf-js
+import PDF from 'react-pdf-js'; 
 
 const EbookReader = () => {
   const { ebookId } = useParams(); 

@@ -12,7 +12,7 @@ const DownloadEbook = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [downloadLink, setDownloadLink] = useState(null);
+  // const [downloadLink, setDownloadLink] = useState(null);
  
   const handleDownload = async () => {
     if (!ebook) {

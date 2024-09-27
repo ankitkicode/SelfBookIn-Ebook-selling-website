@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:5000/api', 
+  baseURL: 'https://selfbookin-ebook-selling-website-web.onrender.com/api', 
     'Content-Type': 'application/json',
   },);
   
