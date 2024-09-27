@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";
 
 const Ebooks = () => {
-  const { ebooks, error, loading,userEbooks, user} = useContext(ProductContext);
-  console.log('home se user ek books ', {userEbooks,ebooks,user})
+  const { ebooks, error, loading,} = useContext(ProductContext);
+
   if (loading) return <div>Loading eBooks...</div>;
   if (error) return <div>{error}</div>;
 

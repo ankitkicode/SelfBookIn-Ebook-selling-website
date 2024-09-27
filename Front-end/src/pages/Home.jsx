@@ -59,14 +59,14 @@ export default function Component() {
       {/* Book Card */}
       <div className="bg-white rounded-lg shadow-lg transition-transform hover:scale-105 duration-300 ease-in-out w-full max-w-xs">
         <img
-          src="https://via.placeholder.com/150"
+          src="https://my-ebook-store.s3.eu-north-1.amazonaws.com/1727426826834_48-laws-of-power.jpg"
           alt="Ebook Cover"
           className="rounded-t-lg object-cover w-full aspect-[3/4]"
         />
         <div className="p-6 space-y-3">
-          <h3 className="text-[18px] font-semibold text-gray-800">The Vanishing Half</h3>
+          <h3 className="text-[18px] font-semibold text-gray-800">The 48 Laws of Power</h3>
           <p className="text-[14px] text-gray-500">
-            A powerful story about identity, family, and the lasting impact of the past.
+          Fantastic stories broadly applicable to success in life, though a bit overwhelming in scope and heavy to work through. That said, it was banned from US prisons for a reason
           </p>
         </div>
       </div>
@@ -74,14 +74,15 @@ export default function Component() {
       {/* Book Card 2 */}
       <div className="bg-white rounded-lg shadow-lg transition-transform hover:scale-105 duration-300 ease-in-out w-full max-w-xs">
         <img
-          src="https://via.placeholder.com/150"
+          src="https://via.placeholder.com/150https://my-ebook-store.s3.eu-north-1.amazonaws.com/1727427927866_images%20%284%29.jpeg"
           alt="Ebook Cover"
           className="rounded-t-lg object-cover w-full aspect-[3/4]"
         />
         <div className="p-6 space-y-3">
-          <h3 className="text-[18px] font-semibold text-gray-800">Ebook Title</h3>
+          <h3 className="text-[18px] font-semibold text-gray-800">Rich Dad Poor Dad</h3>
           <p className="text-[14px] text-gray-500">
-            Short description about the ebook goes here.
+          Rich Dad Poor Dad is a starting point for anyone
+          looking to gain control of their financial future.
           </p>
         </div>
       </div>
@@ -89,14 +90,14 @@ export default function Component() {
       {/* Book Card 3 */}
       <div className="bg-white rounded-lg shadow-lg transition-transform hover:scale-105 duration-300 ease-in-out w-full max-w-xs">
         <img
-          src="https://via.placeholder.com/150"
+          src="https://my-ebook-store.s3.eu-north-1.amazonaws.com/1727427287747_product-jpeg.jpg"
           alt="Ebook Cover"
           className="rounded-t-lg object-cover w-full aspect-[3/4]"
         />
         <div className="p-6 space-y-3">
-          <h3 className="text-[18px] font-semibold text-gray-800">Ebook Title</h3>
+          <h3 className="text-[18px] font-semibold text-gray-800">The Power of your subconscious mind</h3>
           <p className="text-[14px] text-gray-500">
-            Another compelling description of an ebook.
+          The Power of Your Subconscious Mind will open a world of success, happiness, prosperity, and peace for you. It is one of the most
           </p>
         </div>
       </div>
@@ -153,7 +154,7 @@ export default function Component() {
       <div className="flex flex-col items-start p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-full max-w-xs">
         <div className="flex items-center space-x-4">
           <img
-            src="https://via.placeholder.com/150"
+            src="https://cdn-icons-png.flaticon.com/512/4515/4515630.png"
             alt="Avatar"
             className="h-12 w-12 rounded-full object-cover"
           />
@@ -171,7 +172,7 @@ export default function Component() {
       <div className="flex flex-col items-start p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-full max-w-xs">
         <div className="flex items-center space-x-4">
           <img
-            src="https://via.placeholder.com/150"
+            src="hhttps://cdn-icons-png.flaticon.com/512/4515/4515630.png"
             alt="Avatar"
             className="h-12 w-12 rounded-full object-cover"
           />
@@ -189,7 +190,7 @@ export default function Component() {
       <div className="flex flex-col items-start p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-full max-w-xs">
         <div className="flex items-center space-x-4">
           <img
-            src="https://via.placeholder.com/150"
+            src="https://cdn-icons-png.flaticon.com/512/4515/4515630.png"
             alt="Avatar"
             className="h-12 w-12 rounded-full object-cover"
           />
